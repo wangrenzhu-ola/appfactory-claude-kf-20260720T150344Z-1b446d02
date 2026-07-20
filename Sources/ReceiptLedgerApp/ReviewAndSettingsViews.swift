@@ -106,7 +106,6 @@ struct DraftField: View {
             Text(label).font(.headline).foregroundColor(LedgerTheme.graphite)
             TextField(prompt, text: $text)
                 .keyboardType(keyboard)
-                .submitLabel(.done)
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(.vertical, 8)
                 .accessibilityLabel(label)
@@ -302,7 +301,6 @@ struct PrivacySettingsView: View {
                         Text("No remote service is active in this version.").font(.caption).foregroundColor(LedgerTheme.inkSecondary)
                     }
                 }
-                .tint(LedgerTheme.moss)
                 .accessibilityLabel("Allow optional processing")
                 Button("Review what would be shared", action: { showDisclosure = true })
                     .buttonStyle(OutlineButtonStyle())
