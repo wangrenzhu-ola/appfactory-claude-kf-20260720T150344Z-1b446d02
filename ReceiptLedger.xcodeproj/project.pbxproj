@@ -13,6 +13,9 @@
 		A10000000000000000000005 /* ReviewAndSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* ReviewAndSettingsViews.swift */; };
 		A10000000000000000000006 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* Artwork.swift */; };
 		A10000000000000000000007 /* LedgerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* LedgerCore.swift */; };
+		A10000000000000000000009 /* CodingClientec64e76c2d8a.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* CodingClientec64e76c2d8a.swift */; };
+		A1000000000000000000000A /* Envelope82e1cbe4b04c.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* Envelope82e1cbe4b04c.swift */; };
+		A1000000000000000000000B /* Material2586c7d537be.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* Material2586c7d537be.swift */; };
 		A10000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -25,11 +28,14 @@
 		A20000000000000000000006 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 		A20000000000000000000007 /* LedgerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerCore.swift; sourceTree = "<group>"; };
 		A20000000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000010 /* CodingClientec64e76c2d8a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/CodingClientec64e76c2d8a.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000011 /* Envelope82e1cbe4b04c.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Envelope82e1cbe4b04c.swift; sourceTree = SOURCE_ROOT; };
+		A20000000000000000000012 /* Material2586c7d537be.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/Material2586c7d537be.swift; sourceTree = SOURCE_ROOT; };
 		A20000000000000000000009 /* ReceiptLedger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReceiptLedger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		A30000000000000000000001 = {isa = PBXGroup; children = (A30000000000000000000002 /* ReceiptLedgerApp */, A30000000000000000000003 /* ReceiptLedgerCore */, A30000000000000000000004 /* Products */); sourceTree = "<group>"; };
+		A30000000000000000000001 = {isa = PBXGroup; children = (A30000000000000000000002 /* ReceiptLedgerApp */, A30000000000000000000003 /* ReceiptLedgerCore */, A30000000000000000000004 /* Products */, A20000000000000000000010 /* CodingClientec64e76c2d8a.swift */, A20000000000000000000011 /* Envelope82e1cbe4b04c.swift */, A20000000000000000000012 /* Material2586c7d537be.swift */); sourceTree = "<group>"; };
 		A30000000000000000000002 /* ReceiptLedgerApp */ = {isa = PBXGroup; children = (A20000000000000000000001, A20000000000000000000002, A20000000000000000000003, A20000000000000000000004, A20000000000000000000005, A20000000000000000000006, A20000000000000000000008); path = Sources/ReceiptLedgerApp; sourceTree = SOURCE_ROOT; };
 		A30000000000000000000003 /* ReceiptLedgerCore */ = {isa = PBXGroup; children = (A20000000000000000000007); path = Sources/ReceiptLedgerCore; sourceTree = SOURCE_ROOT; };
 		A30000000000000000000004 /* Products */ = {isa = PBXGroup; children = (A20000000000000000000009); name = Products; sourceTree = "<group>"; };
@@ -48,7 +54,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A60000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006, A10000000000000000000007); runOnlyForDeploymentPostprocessing = 0; };
+		A60000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006, A10000000000000000000007, A10000000000000000000009, A1000000000000000000000A, A1000000000000000000000B); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
