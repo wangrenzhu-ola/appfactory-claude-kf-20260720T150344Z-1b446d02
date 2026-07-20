@@ -1,0 +1,71 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* ReceiptLedgerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* ReceiptLedgerApp.swift */; };
+		A10000000000000000000002 /* LedgerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* LedgerStore.swift */; };
+		A10000000000000000000003 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* AppRootView.swift */; };
+		A10000000000000000000004 /* CaptureAndReceiptViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* CaptureAndReceiptViews.swift */; };
+		A10000000000000000000005 /* ReviewAndSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* ReviewAndSettingsViews.swift */; };
+		A10000000000000000000006 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* Artwork.swift */; };
+		A10000000000000000000007 /* LedgerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* LedgerCore.swift */; };
+		A10000000000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* ReceiptLedgerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptLedgerApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* LedgerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerStore.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* CaptureAndReceiptViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureAndReceiptViews.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* ReviewAndSettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewAndSettingsViews.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* LedgerCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerCore.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000009 /* ReceiptLedger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReceiptLedger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		A30000000000000000000001 = {isa = PBXGroup; children = (A30000000000000000000002 /* ReceiptLedgerApp */, A30000000000000000000003 /* ReceiptLedgerCore */, A30000000000000000000004 /* Products */); sourceTree = "<group>"; };
+		A30000000000000000000002 /* ReceiptLedgerApp */ = {isa = PBXGroup; children = (A20000000000000000000001, A20000000000000000000002, A20000000000000000000003, A20000000000000000000004, A20000000000000000000005, A20000000000000000000006, A20000000000000000000008); path = Sources/ReceiptLedgerApp; sourceTree = SOURCE_ROOT; };
+		A30000000000000000000003 /* ReceiptLedgerCore */ = {isa = PBXGroup; children = (A20000000000000000000007); path = Sources/ReceiptLedgerCore; sourceTree = SOURCE_ROOT; };
+		A30000000000000000000004 /* Products */ = {isa = PBXGroup; children = (A20000000000000000000009); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A40000000000000000000001 /* ReceiptLedger */ = {isa = PBXNativeTarget; buildConfigurationList = A50000000000000000000002 /* Build configuration list for PBXNativeTarget "ReceiptLedger" */; buildPhases = (A60000000000000000000001 /* Sources */, A60000000000000000000002 /* Frameworks */, A60000000000000000000003 /* Resources */); buildRules = (); dependencies = (); name = ReceiptLedger; productName = ReceiptLedger; productReference = A20000000000000000000009 /* ReceiptLedger.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A70000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = { LastUpgradeCheck = 2660; TargetAttributes = { A40000000000000000000001 = { CreatedOnToolsVersion = 26.6; }; }; }; buildConfigurationList = A50000000000000000000001 /* Build configuration list for PBXProject "ReceiptLedger" */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A30000000000000000000001; productRefGroup = A30000000000000000000004 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (A40000000000000000000001 /* ReceiptLedger */); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000008 /* Assets.xcassets in Resources */); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006, A10000000000000000000007); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A60000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A80000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = { CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; IPHONEOS_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 5.0; }; name = Debug; };
+		A80000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = { CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; IPHONEOS_DEPLOYMENT_TARGET = 14.0; SWIFT_VERSION = 5.0; }; name = Release; };
+		A80000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Receipt Ledger"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance"; IPHONEOS_DEPLOYMENT_TARGET = 14.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.appfactory.receiptledger; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		A80000000000000000000004 /* Release */ = {isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Receipt Ledger"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance"; IPHONEOS_DEPLOYMENT_TARGET = 14.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.appfactory.receiptledger; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A50000000000000000000001 /* Build configuration list for PBXProject "ReceiptLedger" */ = {isa = XCConfigurationList; buildConfigurations = (A80000000000000000000001, A80000000000000000000002); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A50000000000000000000002 /* Build configuration list for PBXNativeTarget "ReceiptLedger" */ = {isa = XCConfigurationList; buildConfigurations = (A80000000000000000000003, A80000000000000000000004); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = A70000000000000000000001 /* Project object */;
+}

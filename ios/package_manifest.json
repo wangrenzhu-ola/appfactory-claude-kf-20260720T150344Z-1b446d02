@@ -1,0 +1,9 @@
+{
+  "schema_version": "appfactory.ios-package-manifest.v1",
+  "product_name": "Receipt Ledger",
+  "bundle_identifier": "com.appfactory.receiptledger",
+  "language": "Swift 5",
+  "minimum_ios": "14.0",
+  "xcode_project": "ReceiptLedger.xcodeproj",
+  "scheme": "ReceiptLedger"
+}
