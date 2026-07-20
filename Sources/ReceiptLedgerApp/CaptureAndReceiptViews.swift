@@ -264,3 +264,19 @@ struct EntrySummary: View {
         .background(Color.white.opacity(0.55)).cornerRadius(14)
     }
 }
+
+struct StatusPill: View {
+    let text: String
+    let tint: Color
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: text == "Confirmed" ? "checkmark.circle.fill" : "circle.fill").font(.caption2)
+            Text(text).font(.caption.weight(.semibold))
+        }
+        .foregroundColor(tint)
+        .padding(.horizontal, 8).padding(.vertical, 5)
+        .background(tint.opacity(0.12)).cornerRadius(10)
+        .accessibilityLabel(text)
+    }
+}
