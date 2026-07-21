@@ -13,6 +13,8 @@ final class LedgerCoreTests: XCTestCase {
         let csv = LedgerCore.csv(entries: [early, late])
         XCTAssertTrue(csv.hasPrefix("merchant,date,amount,category,reviewed"))
         XCTAssertTrue(csv.contains("\"Supply, Co\""))
+        XCTAssertTrue(csv.contains(",48.20,Materials,true"))
+        XCTAssertTrue(csv.contains(",1970-01-01,"))
         XCTAssertLessThan(csv.range(of: "Supply")!.lowerBound, csv.range(of: "Parking")!.lowerBound)
     }
 
@@ -23,5 +25,24 @@ final class LedgerCoreTests: XCTestCase {
         XCTAssertEqual(draft.receiptID, receiptID)
         XCTAssertEqual(draft.amount, "52.00")
         XCTAssertEqual(draft.state, .ready)
+    }
+
+    func testRecognizedTextCreatesEditableDraft() {
+        let receiptID = UUID()
+        let draft = ReceiptDraftParser.candidate(
+            for: receiptID,
+            recognizedText: "Corner Hardware\nDate: 2026-07-20\nTotal $48.20"
+        )
+        XCTAssertEqual(draft.receiptID, receiptID)
+        XCTAssertEqual(draft.merchant, "Corner Hardware")
+        XCTAssertEqual(draft.amount, "48.20")
+        XCTAssertEqual(draft.category, .materials)
+        XCTAssertFalse(ReceiptDraftParser.needsManualInput(draft))
+    }
+
+    func testUnreadableTextPreservesManualFallback() {
+        let draft = ReceiptDraftParser.candidate(for: UUID(), recognizedText: "---")
+        XCTAssertEqual(draft.state, .manual)
+        XCTAssertTrue(ReceiptDraftParser.needsManualInput(draft))
     }
 }

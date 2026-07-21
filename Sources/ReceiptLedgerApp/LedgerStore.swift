@@ -32,27 +32,55 @@ final class LedgerStore: ObservableObject {
         entries.first { $0.receiptID == receiptID }
     }
 
-    func createReceipt(title: String = "New local receipt") -> Receipt {
-        let receipt = Receipt(title: title)
+    func createReceipt(title: String = "New local receipt", localImagePath: String? = nil) -> Receipt {
+        let receipt = Receipt(title: title, localImagePath: localImagePath)
         receipts.insert(receipt, at: 0)
         return receipt
     }
 
-    func createSuggestedDraft(for receiptID: UUID, completion: @escaping (ExpenseDraft?) -> Void) {
-        setDraft(ExpenseDraft(receiptID: receiptID, merchant: "", amount: "", date: Date(), category: .other, state: .creating), for: receiptID)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
-            guard let self = self, self.receipt(with: receiptID) != nil else {
-                completion(nil)
-                return
-            }
-            let draft = LocalDraftEngine.candidate(for: receiptID)
-            self.setDraft(draft, for: receiptID)
-            completion(draft)
-        }
+    func beginDraft(for receiptID: UUID) {
+        guard let receipt = receipt(with: receiptID) else { return }
+        setDraft(
+            ExpenseDraft(
+                receiptID: receiptID,
+                merchant: "",
+                amount: "",
+                date: receipt.capturedAt,
+                category: .other,
+                state: .creating
+            ),
+            for: receiptID
+        )
+    }
+
+    func completeRecognizedDraft(for receiptID: UUID, recognizedText: String) -> ExpenseDraft? {
+        guard let receipt = receipt(with: receiptID) else { return nil }
+        let draft = ReceiptDraftParser.candidate(
+            for: receiptID,
+            recognizedText: recognizedText,
+            capturedAt: receipt.capturedAt
+        )
+        setDraft(draft, for: receiptID)
+        return draft
+    }
+
+    func createFailedDraft(for receiptID: UUID) -> ExpenseDraft? {
+        guard let receipt = receipt(with: receiptID) else { return nil }
+        let draft = ExpenseDraft(
+            receiptID: receiptID,
+            merchant: "",
+            amount: "",
+            date: receipt.capturedAt,
+            category: .other,
+            state: .failed
+        )
+        setDraft(draft, for: receiptID)
+        return draft
     }
 
     func createManualDraft(for receiptID: UUID) -> ExpenseDraft {
-        let draft = ExpenseDraft(receiptID: receiptID, merchant: "", amount: "", date: Date(), category: .other, state: .manual)
+        let capturedAt = receipt(with: receiptID)?.capturedAt ?? Date()
+        let draft = ExpenseDraft(receiptID: receiptID, merchant: "", amount: "", date: capturedAt, category: .other, state: .manual)
         setDraft(draft, for: receiptID)
         return draft
     }

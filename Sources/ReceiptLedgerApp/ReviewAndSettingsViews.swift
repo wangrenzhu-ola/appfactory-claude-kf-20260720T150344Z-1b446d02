@@ -7,6 +7,7 @@ struct ReviewDraftView: View {
     @Binding var selectedTab: Int
     @State private var draft: ExpenseDraft
     @State private var errorMessage: String?
+    @State private var isRetrying = false
     @State private var showConfirmation = false
 
     init(draft: ExpenseDraft, selectedTab: Binding<Int>) {
@@ -19,12 +20,9 @@ struct ReviewDraftView: View {
             VStack(alignment: .leading, spacing: 18) {
                 ReviewHighlightArtwork().frame(height: 118).accessibilityHidden(true)
                 Text("Review draft").font(.system(.largeTitle, design: .serif).weight(.bold))
-                Text("Suggestions are editable. Confirm Entry is the only action that saves an expense entry.")
+                Text("Suggested fields are editable. Confirm Entry is the only action that saves an expense entry.")
                     .foregroundColor(LedgerTheme.inkSecondary).fixedSize(horizontal: false, vertical: true)
-                if let errorMessage = errorMessage {
-                    StatusPanel(symbol: "exclamationmark.triangle", title: "Draft not saved", detail: errorMessage, tint: .red)
-                        .accessibilityLabel("Draft not saved. \(errorMessage)")
-                }
+                reviewStatus
                 DraftField(label: "Merchant", text: $draft.merchant, prompt: "Where did you pay?")
                 DraftField(label: "Amount", text: $draft.amount, prompt: "0.00", keyboard: .decimalPad)
                 VStack(alignment: .leading, spacing: 8) {
@@ -42,11 +40,22 @@ struct ReviewDraftView: View {
                     .accessibilityLabel("Expense category")
                 }
                 .padding(14).background(Color.white.opacity(0.62)).cornerRadius(12)
+                Button("Done editing", action: dismissKeyboard)
+                    .foregroundColor(LedgerTheme.moss)
+                    .frame(maxWidth: .infinity, minHeight: 38)
+                    .accessibilityLabel("Dismiss keyboard")
                 Text("Draft not saved until you confirm it.")
                     .font(.subheadline).foregroundColor(LedgerTheme.inkSecondary)
                 Button("Confirm Entry", action: prepareConfirmation)
                     .buttonStyle(PrimaryButtonStyle())
+                    .disabled(isRetrying)
                     .accessibilityLabel("Confirm expense entry")
+                if draft.state == .failed || errorMessage != nil {
+                    Button("Try again", action: retryRecognition)
+                        .buttonStyle(OutlineButtonStyle())
+                        .disabled(isRetrying)
+                        .accessibilityLabel("Try reading this receipt again")
+                }
                 Button("Enter details manually", action: resetForManualEntry)
                     .foregroundColor(LedgerTheme.moss).frame(maxWidth: .infinity, minHeight: 44)
                     .accessibilityLabel("Clear suggestions and enter details manually")
@@ -61,6 +70,23 @@ struct ReviewDraftView: View {
         .sheet(isPresented: $showConfirmation) {
             EntryConfirmationView(draft: draft, selectedTab: $selectedTab, onFinish: { presentationMode.wrappedValue.dismiss() })
                 .environmentObject(store)
+        }
+    }
+
+    @ViewBuilder
+    private var reviewStatus: some View {
+        if isRetrying {
+            StatusPanel(symbol: "hourglass", title: "Creating draft…", detail: "Reading the locally saved receipt again.", tint: LedgerTheme.amber)
+                .accessibilityLabel("Creating draft. Reading the locally saved receipt again.")
+        } else if draft.state == .failed {
+            StatusPanel(symbol: "exclamationmark.triangle", title: "Draft needs your input", detail: "We could not read this receipt. Try again or enter details manually.", tint: .red)
+                .accessibilityLabel("Draft needs your input. Try again or enter details manually.")
+        } else if ReceiptDraftParser.needsManualInput(draft) {
+            StatusPanel(symbol: "pencil.circle", title: "Complete the draft", detail: "Some receipt fields need your input before confirmation.", tint: LedgerTheme.amber)
+                .accessibilityLabel("Complete the draft. Some receipt fields need your input before confirmation.")
+        } else if let errorMessage = errorMessage {
+            StatusPanel(symbol: "exclamationmark.triangle", title: "Draft not saved", detail: errorMessage, tint: .red)
+                .accessibilityLabel("Draft not saved. \(errorMessage)")
         }
     }
 
@@ -80,6 +106,34 @@ struct ReviewDraftView: View {
         return .success(())
     }
 
+    private func retryRecognition() {
+        guard let receipt = store.receipt(with: draft.receiptID),
+              let image = ReceiptImageStore.load(path: receipt.localImagePath) else {
+            errorMessage = "Choose another receipt photo or enter details manually."
+            return
+        }
+        isRetrying = true
+        errorMessage = nil
+        store.beginDraft(for: receipt.id)
+        ReceiptTextRecognitionService.recognize(image: image) { result in
+            isRetrying = false
+            switch result {
+            case .success(let text):
+                guard let updated = store.completeRecognizedDraft(for: receipt.id, recognizedText: text) else {
+                    errorMessage = "The local draft could not be opened. Enter details manually."
+                    return
+                }
+                draft = updated
+                if ReceiptDraftParser.needsManualInput(updated) {
+                    errorMessage = "We found partial receipt details. Complete the empty fields before confirming."
+                }
+            case .failure(let error):
+                draft = store.createFailedDraft(for: receipt.id) ?? draft
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     private func resetForManualEntry() {
         draft.merchant = ""
         draft.amount = ""
@@ -87,6 +141,10 @@ struct ReviewDraftView: View {
         draft.state = .manual
         errorMessage = nil
         store.updateDraft(draft)
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 
     private func cancel() {

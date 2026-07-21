@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct CaptureView: View {
     @EnvironmentObject private var store: LedgerStore
@@ -6,7 +7,9 @@ struct CaptureView: View {
     @State private var isCreating = false
     @State private var activeDraft: ExpenseDraft?
     @State private var showDisclosure = false
+    @State private var pickerSource: ReceiptCaptureSource?
     @State private var statusText: String?
+    @State private var captureError: String?
 
     var body: some View {
         ScrollView {
@@ -17,29 +20,21 @@ struct CaptureView: View {
                 Text("Capture a receipt")
                     .font(.system(.largeTitle, design: .serif).weight(.bold))
                     .foregroundColor(LedgerTheme.graphite)
-                Text("Create a local draft first. Nothing becomes an expense entry until you confirm it.")
+                Text("Choose a receipt image to make an editable local draft. Nothing becomes an expense entry until you confirm it.")
                     .font(.body)
                     .foregroundColor(LedgerTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
-                if isCreating {
-                    StatusPanel(symbol: "hourglass", title: "Creating draft…", detail: "Your local receipt draft is being prepared. You can switch tabs and return without losing it.", tint: LedgerTheme.amber)
-                        .accessibilityLabel("Creating draft. Your local receipt draft is being prepared.")
-                } else if let statusText = statusText {
-                    StatusPanel(symbol: "checkmark.seal", title: statusText, detail: "Review every field before confirming an entry.", tint: LedgerTheme.moss)
-                        .accessibilityLabel(statusText)
-                } else {
-                    StatusPanel(symbol: "lock", title: "Local by default", detail: "Draft suggestions are created on this device. Manual entry is always available.", tint: LedgerTheme.moss)
-                }
-                Button(action: startPhotoSelection) {
+                captureStatus
+                Button(action: choosePhoto) {
                     Label("Choose a photo", systemImage: "photo.on.rectangle")
                 }
                 .buttonStyle(PrimaryButtonStyle())
                 .accessibilityLabel("Choose a receipt photo")
-                Button(action: startCapture) {
+                Button(action: chooseCamera) {
                     Label("Capture receipt", systemImage: "camera")
                 }
                 .buttonStyle(OutlineButtonStyle())
-                .accessibilityLabel("Capture a receipt")
+                .accessibilityLabel("Capture a receipt with the camera")
                 Button("Enter details manually", action: startManualEntry)
                     .foregroundColor(LedgerTheme.moss)
                     .font(.headline)
@@ -57,12 +52,34 @@ struct CaptureView: View {
         .navigationBarTitle("Capture", displayMode: .inline)
         .background(NavigationLink(destination: reviewDestination, isActive: reviewIsActive) { EmptyView() }.hidden())
         .sheet(isPresented: $showDisclosure) { ProcessingDisclosureView() }
+        .sheet(item: $pickerSource) { source in
+            ReceiptImagePicker(source: source, onImage: importReceiptImage, onCancel: dismissPicker)
+        }
+    }
+
+    @ViewBuilder
+    private var captureStatus: some View {
+        if isCreating {
+            StatusPanel(symbol: "hourglass", title: "Creating draft…", detail: "Reading this selected receipt on your device. You can return to it without losing the local draft.", tint: LedgerTheme.amber)
+                .accessibilityLabel("Creating draft. Reading this receipt on your device.")
+        } else if let captureError = captureError {
+            StatusPanel(symbol: "exclamationmark.triangle", title: "Draft needs your input", detail: captureError, tint: .red)
+                .accessibilityLabel("Draft needs your input. \(captureError)")
+        } else if let statusText = statusText {
+            StatusPanel(symbol: "checkmark.seal", title: statusText, detail: "Review every field before confirming an entry.", tint: LedgerTheme.moss)
+                .accessibilityLabel(statusText)
+        } else {
+            StatusPanel(symbol: "lock", title: "Local by default", detail: "Receipt text is read on this device. Manual entry is always available.", tint: LedgerTheme.moss)
+        }
     }
 
     private var reviewDestination: some View {
         Group {
-            if let draft = activeDraft { ReviewDraftView(draft: draft, selectedTab: $selectedTab) }
-            else { EmptyView() }
+            if let draft = activeDraft {
+                ReviewDraftView(draft: draft, selectedTab: $selectedTab)
+            } else {
+                EmptyView()
+            }
         }
     }
 
@@ -70,22 +87,59 @@ struct CaptureView: View {
         Binding(get: { activeDraft != nil && !isCreating }, set: { if !$0 { activeDraft = nil } })
     }
 
-    private func startPhotoSelection() { createSuggestedReceipt(title: "Selected receipt photo") }
-    private func startCapture() { createSuggestedReceipt(title: "Captured receipt") }
+    private func choosePhoto() {
+        captureError = nil
+        pickerSource = .photoLibrary
+    }
 
-    private func createSuggestedReceipt(title: String) {
-        let receipt = store.createReceipt(title: title)
-        isCreating = true
-        statusText = nil
-        store.createSuggestedDraft(for: receipt.id) { draft in
-            isCreating = false
-            guard let draft = draft else {
-                statusText = "Draft could not be created"
+    private func chooseCamera() {
+        captureError = nil
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            captureError = "Camera is unavailable on this device. Choose a photo or enter details manually."
+            return
+        }
+        pickerSource = .camera
+    }
+
+    private func importReceiptImage(_ image: UIImage) {
+        pickerSource = nil
+        do {
+            let path = try ReceiptImageStore.save(image)
+            let receipt = store.createReceipt(title: "Local receipt image", localImagePath: path)
+            isCreating = true
+            statusText = nil
+            captureError = nil
+            store.beginDraft(for: receipt.id)
+            ReceiptTextRecognitionService.recognize(image: image) { result in
+                finishRecognition(result, receiptID: receipt.id)
+            }
+        } catch {
+            captureError = error.localizedDescription
+        }
+    }
+
+    private func finishRecognition(_ result: Result<String, ReceiptRecognitionError>, receiptID: UUID) {
+        isCreating = false
+        switch result {
+        case .success(let text):
+            guard let draft = store.completeRecognizedDraft(for: receiptID, recognizedText: text) else {
+                captureError = "The local draft could not be opened. Try another photo or enter details manually."
                 return
             }
-            statusText = "Draft created"
             activeDraft = draft
+            if ReceiptDraftParser.needsManualInput(draft) {
+                captureError = "We found partial receipt details. Complete the empty fields before confirming."
+            } else {
+                statusText = "Draft created"
+            }
+        case .failure(let error):
+            activeDraft = store.createFailedDraft(for: receiptID)
+            captureError = error.localizedDescription
         }
+    }
+
+    private func dismissPicker() {
+        pickerSource = nil
     }
 
     private func startManualEntry() {
@@ -221,6 +275,7 @@ struct ReceiptDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 18) {
                         Text("Receipt detail").font(.system(.largeTitle, design: .serif).weight(.bold))
+                        ReceiptImagePreview(localImagePath: receipt.localImagePath)
                         StatusPanel(symbol: "doc.text.image", title: receipt.title, detail: receipt.entryID == nil ? "Not yet confirmed" : "Linked to a confirmed expense entry", tint: receipt.entryID == nil ? LedgerTheme.amber : LedgerTheme.moss)
                         if let draft = receipt.draft, receipt.entryID == nil {
                             NavigationLink(destination: ReviewDraftView(draft: draft, selectedTab: .constant(1))) {
@@ -247,6 +302,36 @@ struct ReceiptDetailView: View {
             }
         }
         .navigationBarTitle("Receipt detail", displayMode: .inline)
+    }
+}
+
+struct ReceiptImagePreview: View {
+    let localImagePath: String?
+
+    var body: some View {
+        Group {
+            if let image = ReceiptImageStore.load(path: localImagePath) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 260)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white.opacity(0.62))
+                    .cornerRadius(14)
+                    .accessibilityLabel("Locally stored receipt image")
+            } else {
+                HStack(spacing: 12) {
+                    Image(systemName: "doc.text.image")
+                        .font(.title2)
+                        .foregroundColor(LedgerTheme.inkSecondary)
+                    Text("No image was saved for this receipt.")
+                        .foregroundColor(LedgerTheme.inkSecondary)
+                }
+                .frame(maxWidth: .infinity, minHeight: 82)
+                .overlay(RoundedRectangle(cornerRadius: 14).stroke(LedgerTheme.rule, lineWidth: 1))
+                .accessibilityLabel("No image was saved for this receipt")
+            }
+        }
     }
 }
 
