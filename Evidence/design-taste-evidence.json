@@ -1,0 +1,20 @@
+{
+  "schema_version": "appfactory.design_taste_evidence.v2",
+  "design_direction": "Durable field ledger: warm paper surfaces, graphite hierarchy, moss confirmation, amber review states, and monospaced amounts.",
+  "source_tree_fingerprint": "9827992441b059dba27c5f200657958d76442fc72d2762d2719c1d668112f17e",
+  "product_state_evidence": {
+    "primary": "Capture, review, confirmation, monthly review, and export use a focused field-ledger hierarchy rather than a generic dashboard.",
+    "loading": "Capture and retry states use an explicit Creating draft status panel with text and an hourglass symbol.",
+    "empty": "Receipts and monthly review use purposeful empty states that direct the user to capture or select a month.",
+    "error": "Unreadable images, validation failures, unavailable camera, and export failures expose a next action without silent writes.",
+    "accessibility": "Interactive controls use English accessibility labels; status includes text and symbols, and Review Draft provides a keyboard dismissal action."
+  },
+  "monetization": {
+    "selected": false,
+    "rationale": "v0 先验证无账号本地确认闭环；没有 App Store Connect 商品和 StoreKit 证据时不展示或声称 IAP。",
+    "value_exchange": "当前免费提供本地收据到费用条目闭环；以后付费仅在真实商品、恢复购买和审核证据齐备后评估。",
+    "evidence_refs": [
+      "attempt-2/sidecars/future_versions.md"
+    ]
+  }
+}

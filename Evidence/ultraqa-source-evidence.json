@@ -1,0 +1,41 @@
+{
+  "schema_version": "appfactory.ultraqa_scenario_matrix.v1",
+  "run_id": "kf-20260720T150344Z-1b446d02",
+  "goal_version": 1,
+  "check_id": "rough_app_source_verification",
+  "scenarios": [
+    {
+      "scenario_id": "source-normal-capture-to-confirm-contract",
+      "kind": "normal",
+      "status": "PASS",
+      "expected_signal": "The host-runnable core parses a receipt candidate, preserves editable fields, and exports a confirmed entry in descending order.",
+      "actual_signal": "LedgerCoreTests executed 5 tests with 0 failures, including recognized-text editable-draft and CSV format coverage.",
+      "matched": true,
+      "command_receipt_refs": [
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/source-unit-tests.log"
+      ],
+      "evidence_refs": [
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/source-unit-tests.log",
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/xcode-source-build.log"
+      ]
+    },
+    {
+      "scenario_id": "source-adversarial-unreadable-receipt-fallback",
+      "kind": "adversarial",
+      "status": "PASS",
+      "expected_signal": "Unreadable receipt text keeps the draft in the manual fallback state instead of creating an expense entry.",
+      "actual_signal": "testUnreadableTextPreservesManualFallback passed; the parser marks an unreadable draft manual and requires user input.",
+      "matched": true,
+      "command_receipt_refs": [
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/source-unit-tests.log"
+      ],
+      "evidence_refs": [
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/source-unit-tests.log",
+        "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/receipt-ledger-source.zip"
+      ]
+    }
+  ],
+  "blockers": [],
+  "fixture_only": false,
+  "test_only": false
+}

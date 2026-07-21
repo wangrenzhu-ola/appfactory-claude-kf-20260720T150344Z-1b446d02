@@ -1,0 +1,26 @@
+Building for debugging...
+[0/2] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.20s)
+Test Suite 'All tests' started at 2026-07-21 10:06:56.916.
+Test Suite 'ReceiptLedgerPackageTests.xctest' started at 2026-07-21 10:06:56.919.
+Test Suite 'LedgerCoreTests' started at 2026-07-21 10:06:56.919.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testCandidateIsEditableBeforeConfirmation]' started.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testCandidateIsEditableBeforeConfirmation]' passed (0.003 seconds).
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testCSVUsesHeaderAndDescendingDates]' started.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testCSVUsesHeaderAndDescendingDates]' passed (0.003 seconds).
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testParsesUSAmount]' started.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testParsesUSAmount]' passed (0.001 seconds).
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testRecognizedTextCreatesEditableDraft]' started.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testRecognizedTextCreatesEditableDraft]' passed (0.002 seconds).
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testUnreadableTextPreservesManualFallback]' started.
+Test Case '-[ReceiptLedgerCoreTests.LedgerCoreTests testUnreadableTextPreservesManualFallback]' passed (0.000 seconds).
+Test Suite 'LedgerCoreTests' passed at 2026-07-21 10:06:56.929.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.009 (0.010) seconds
+Test Suite 'ReceiptLedgerPackageTests.xctest' passed at 2026-07-21 10:06:56.929.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.009 (0.010) seconds
+Test Suite 'All tests' passed at 2026-07-21 10:06:56.929.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.009 (0.012) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

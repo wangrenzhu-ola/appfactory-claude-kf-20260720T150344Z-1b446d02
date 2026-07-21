@@ -1,0 +1,48 @@
+{
+  "schema_version": "appfactory.rough_app_source_self_check.v1",
+  "run_id": "kf-20260720T150344Z-1b446d02",
+  "goal_version": 1,
+  "mode": "normal mode",
+  "ponytail_disabled": true,
+  "implementation_mode": "agent_native_build_loop",
+  "generator_template_substitution_allowed": false,
+  "swift_language_version": "5.0",
+  "ios_deployment_target": "14.0",
+  "acceptance_policy_mode": "source_verification_only",
+  "simulator_runtime": {
+    "required": false,
+    "status": "SKIPPED",
+    "accepted": false,
+    "claimed_pass": false,
+    "must_not_claim_pass": true
+  },
+  "pm_map_validation": {
+    "map_ref": "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/stages/pm_docs/attempt-2/sidecars/package_goal_map.md",
+    "map_sha256": "e261b3129a499a5ae789b4f4c83ee08e55d8e1cf7597d4dd969add357c0229c5",
+    "linked_sidecars_validated": 19,
+    "linked_sidecars_status": "PASS",
+    "missing_closure_artifacts": [
+      "package_goal_map_contract_missing",
+      "design_policy_missing"
+    ]
+  },
+  "source_checks": {
+    "xcode_source_build": {
+      "ref": "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/xcode-source-build.log",
+      "sha256": "0e370cc19ae56af71c0318536259063b8a19b6f9922edf0bca46cccaa5cfbc68",
+      "status": "PASS"
+    },
+    "source_unit_tests": {
+      "ref": "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/source-unit-tests.log",
+      "sha256": "4d69ef333fc15420a8c90964c6edc47bb8c53018f1572ea7135b58741772e170",
+      "status": "PASS",
+      "executed_tests": 5
+    },
+    "source_artifact": {
+      "ref": "/Users/wangrenzhu/orca/workspaces/claude-app-factory/threadfin/runs/kf-20260720T150344Z-1b446d02/product/Evidence/receipt-ledger-source.zip",
+      "sha256": "dce96ae56add320852609139253cf1042b3d0d3a5c5e707942605a88add8404d",
+      "status": "PASS"
+    }
+  },
+  "source_tree_fingerprint": "9827992441b059dba27c5f200657958d76442fc72d2762d2719c1d668112f17e"
+}
